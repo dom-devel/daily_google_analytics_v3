@@ -1,0 +1,7 @@
+.venv
+__pycache__
+*.yml
+*.yaml
+*.csv
+*.json
+local_vars.py
