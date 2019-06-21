@@ -10,7 +10,7 @@ setup(
     author_email="domwoodman@gmail.com",
     url="https://github.com/dom-devel/daily_google_analytics_to_df_or_csv",
     include_package_data=True,
-    download_url="https://github.com/user/reponame/archive/v_01.tar.gz",
+    download_url="https://github.com/dom-devel/daily_google_analytics_to_df_or_csv/archive/0.1.tar.gz",
     keywords=["google analytics", "pandas"],
     install_requires=["pandas", "httplib2", "google-api-python-client", "oauth2client"],
     classifiers=[
