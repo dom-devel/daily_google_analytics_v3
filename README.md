@@ -1,46 +1,42 @@
-# Google Analytics to CSV
+# Google Analytics to DF/CSV
 
-This command line tool allows you to query the Google Api saving the data to csv.
+This is a module that allows you to download daily GA data.
+
+What to use this for?
+
+I've primarily used this for analysis within Jupyter Notebooks. I've found it very useful for short analyses involving GA data.
+
+I wouldn't recommend using in production. The original version was created by [Duncan Morris](https://github.com/duncanmorris) was a nice elegant CLI script.
+
+This is a heavily bastardised version which I cobbled together several years ago to fit my workflows, while I was learning python.
 
 ## Getting started
 
-`git clone git@github.com:DistilledLtd/google_analytics_to_csv.git`
+You can either install straight from pip:
 
-Ideally within a virtual env run the following
+`pip install daily-google-analytics-to-df-or-csv`
 
-`pip install -r requirements.txt`
+Or you can clone and run
 
+`pipenv install`
 
 ## Usage
 
-`python download_ga_data.py settings.yml`
-
-You can optionally pass a start_date and / or end_date (both in YYYYMMDD format). If not they both default to yesterday.
-
-e.g. 
-
-`python download_ga_data.py settings.yml -s 20160701`
-
-`python download_ga_data.py settings.yml -e 20160720`
-
-## settings.yml
-
-Pass a path to a yml settings file. It should be of the following format
-
 ```
----
-account_id: "1618063"
-web_property_id: "UA-1618063-1"
-view_id: "2901806"
-query_params:
-  metrics: "ga:entrances"
-  dimensions: "ga:pagePathLevel1,ga:hostname"
-  filters: "ga:medium==organic;ga:entrances>99"
-  samplingLevel: "HIGHER_PRECISION"
-  max_results: 10000
-csv_file:
-  filename: "distilled_{st}_{ed}.csv"
-  directory: "/tmp"
-```
+import download_ga_data
 
-NB `{st}` and `{ed}` in the csv filename will get converted to the start_date and end_date respectively.
+{
+    "start_date": "YYYY-0-01",
+    "end_date": "2019-01-02",
+    "total_results_per_day": "{The maximum number of results to accept per day}",
+    "query_params": {
+        "metrics": "ga:sessions",
+        "dimensions": "ga:landingPagePath",
+    },
+    "account_id": "{ga-account-id}",
+    "web_property_id": "{ga-property-id}",
+    "view_id": "{ga-view-id}",
+    "auth_type": "service" OR "oauth_client"
+    "auth_file": "{location of the google API credentials file}",
+}
+```
