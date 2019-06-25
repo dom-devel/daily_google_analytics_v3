@@ -137,7 +137,7 @@ def convert_to_date(datestring):
         )
 
 
-def main(google_analytics_query_params):
+def download_v3(google_analytics_query_params):
     """ Returns either a CSV or dataframe containing GA data day by day
     to minimize the chance of sampling.
 
@@ -224,4 +224,4 @@ def main(google_analytics_query_params):
 
 if __name__ == "__main__":
     get_arguments()
-    main()
+    download_v3()

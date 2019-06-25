@@ -4,4 +4,8 @@ __pycache__
 *.yaml
 *.csv
 *.json
+*.ipynb
+*.egg-info
+dist/
+build/
 local_vars.py
