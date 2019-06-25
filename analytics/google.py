@@ -21,7 +21,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-import analytics.definitions
+import analytics.definitions as definitions
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 PARENT_DIR = os.path.abspath(os.path.join(CURRENT_DIR, os.pardir))
@@ -85,6 +85,14 @@ class GoogleAnalyticsProfile(object):
         self._view_id = view_id
         self.auth_file = auth_file
 
+        try:
+            open(self.auth_file, "r")
+        except IOError:
+            raise Exception(
+                "You need to specify the location of your GA API credentials with 'auth_file'. "
+                "If that didn't make sense please see https://www.domwoodman.com/posts/how-to-get-unsampled-google-analytics-data"
+            )
+
         if auth_type is "oauth_client":
             self.service = self._get_oauth_service()
         elif auth_type is "service":
@@ -98,7 +106,6 @@ class GoogleAnalyticsProfile(object):
         # scopes = ['https://www.googleapis.com/auth/analytics.readonly']
 
         http_auth = Http()
-        print(self.auth_file)
         credentials = load_oauth2_credentials(self.auth_file)
         http_auth = credentials.authorize(http_auth)
         service = build("analytics", "v3", http=http_auth)
@@ -131,33 +138,6 @@ class GoogleAnalyticsProfile(object):
         )
 
         return view_info
-
-    def get_view_params_to_filter(self):
-        view_info = self.get_view_info()
-        param_str = view_info.get("excludeQueryParameters", "")
-        return [p.strip() for p in param_str.split(",")]
-
-    def urls_to_filter_exp(self, filter_by, urls, already_used=0):
-        """Convert a list of urls into a ga compatible filter_expression
-        NB the filter expression cannot be longer than 4096 chars
-
-        This is currently un-used.
-        """
-        filter_exp = ""
-        processed_urls = []
-        for url in urls:
-
-            new_filter = "{fb}=={p},".format(fb=filter_by, p=self.url_to_path(url))
-
-            if already_used + len(filter_exp) + len(new_filter) >= 4096:
-                yield filter_exp[:-1], processed_urls
-                filter_exp = ""
-                processed_urls = []
-
-            filter_exp += new_filter
-            processed_urls.append(url)
-
-        yield filter_exp[:-1], processed_urls
 
     def day_finished(self, date):
         """Based on the timezone stored with the profile has the given date ended"""
@@ -337,7 +317,6 @@ class GoogleAnalytics(object):
                         prepared_query_params["start_index"]
                         + prepared_query_params["max_results"]
                     )
-                    print(prepared_query_params["start_index"])
                 else:
                     has_more = False
             else:

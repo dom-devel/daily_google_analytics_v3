@@ -19,7 +19,6 @@ QUERY_REQUIRES = [
     "start_date",
     "end_date",
     "total_results_per_day",
-    "pagination_size",
 ]
 
 QUERY_PARAMS_REQUIRED = {"metrics", "dimensions"}
@@ -146,10 +145,10 @@ def download_v3(google_analytics_query_params):
     web_property_id: The property id of the Google Analytics account.
     view_id: The view id of the Google Analytics account.
     max_results: The maximum number of results returned from GA.
-    startdate: Earliest date (YYYY-MM-DD) to pull data from GA.
-    enddate: Latest date (YYYY-MM-DD) to pull data from GA.
-    auth_type: The type of authentication key: oauth_client or service account
-    auth_file: Location of the authentication file
+    start_date: Earliest date (YYYY-MM-DD) to pull data from GA.
+    end_date: Latest date (YYYY-MM-DD) to pull data from GA.
+    auth_type: The type of authentication key: 'oauth_client' or 'service'.
+    auth_file: Location of the authentication file.
     query_params: In here needs to be GA query parameters
                   https://developers.google.com/analytics/devguides/reporting/core/v3/reference
         metrics: Required
@@ -177,6 +176,9 @@ def download_v3(google_analytics_query_params):
 
     if "total_results_per_day" not in settings:
         settings["total_results_per_day"] = False
+
+    if "pagination_size" not in settings:
+        settings["pagination_size"] = 10000
 
     settings["start_date"] = convert_to_date(settings["start_date"])
     settings["end_date"] = convert_to_date(settings["end_date"])

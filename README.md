@@ -10,6 +10,8 @@ I wouldn't recommend using in production. The original version was created by [D
 
 This is a heavily bastardised version which I cobbled together several years ago to fit my workflows, while I was learning python.
 
+It's a big hot mess, but it is quite useful for ad-hoc analysis.
+
 ## Getting started
 
 You can either install straight from pip:
@@ -23,20 +25,37 @@ Or you can clone and run
 ## Usage
 
 ```
-import download_ga_data
+import daily_ga_data
 
-{
-    "start_date": "YYYY-0-01",
-    "end_date": "2019-01-02",
-    "total_results_per_day": "{The maximum number of results to accept per day}",
+// These are the minimum required fields
+
+daily_ga_data.download_v3({
+    "start_date": "YYYY-MM-DD",
+    "end_date": "YYYY-MM-DD",
     "query_params": {
-        "metrics": "ga:sessions",
-        "dimensions": "ga:landingPagePath",
+        "metrics": "{valid-ga-metric}",
+        "dimensions": "{valid-ga-dimension}",
     },
     "account_id": "{ga-account-id}",
     "web_property_id": "{ga-property-id}",
     "view_id": "{ga-view-id}",
     "auth_type": "service" OR "oauth_client"
     "auth_file": "{location of the google API credentials file}",
-}
+})
+
+// Here is an example minimum viable query for you to get started with
+
+daily_ga_data.download_v3({
+    "account_id": "XXXXXX",
+    "web_property_id": "UA-XXXXXXX-X",
+    "view_id": "XXXXXXX",
+    "start_date": "2019-01-01",
+    "end_date": "2019-01-02",
+    "auth_type": "service",
+    "auth_file": "{location-of-credentials}",
+    "query_params": {
+        "metrics": "ga:sessions",
+        "dimensions": "ga:landingPagePath",
+    },
+})
 ```

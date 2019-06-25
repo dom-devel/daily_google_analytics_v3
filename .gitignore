@@ -9,3 +9,4 @@ __pycache__
 dist/
 build/
 local_vars.py
+webmaster_credentials.dat
