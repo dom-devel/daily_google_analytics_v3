@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="daily-google-analytics-v3",
-    packages=find_packages(),
+    packages=find_packages(exclude=("tests",)),
     version="0.1",
     license="MIT",
     description="A library for downloading daily GA data to a pandas dataframe or CSV using v3 of the API.",
@@ -18,5 +18,4 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
     ],
-    exclude=("tests",),
 )
